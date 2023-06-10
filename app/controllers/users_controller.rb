@@ -6,6 +6,24 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @books = @user.books
     @book = Book.new
+    #ユーザー情報を取得
+    @currentUserEntry=Entry.where(user_id: current_user.id)
+    @userEntry=Entry.where(user_id: @user.id)
+    
+    unless @user.id == current_user.id
+      @currentUserEntry.each do |cu| #チャットルームの特定
+        @userEntry.each do |u|
+          if cu.room_id == u.room_id then
+            @isRoom = true
+            @roomid = cu.room_id
+          end
+        end
+      end
+      unless @isRoom #チャットルームの新規作成
+          @room = Room.new
+          @enrty = Entry.new
+      end
+    end
   end
 
   def index
