@@ -21,7 +21,7 @@ class UsersController < ApplicationController
       end
       unless @isRoom #チャットルームの新規作成
           @room = Room.new
-          @enrty = Entry.new
+          @entry = Entry.new
       end
     end
   end
