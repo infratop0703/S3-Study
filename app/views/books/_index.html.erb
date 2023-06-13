@@ -10,8 +10,10 @@
   <tbody>
     <% books.each do |book| %>
       <tr>
-        <td><%= link_to(book.user) do %>
-          <%= image_tag book.user.get_profile_image(80,80) %>
+        <td>
+          <%# byebug %>
+          <%= link_to(book.user) do %>
+            <%= image_tag book.user.get_profile_image(100,100) %>
           <% end %>
         </td>
         <td><%= link_to book.title,book, class: "book_#{book.id}" %></td>
