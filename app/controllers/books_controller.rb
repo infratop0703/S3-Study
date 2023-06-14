@@ -6,12 +6,13 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])
     @book_comment = BookComment.new
     current_user.read_counts.create(book_id: @book.id)#createはsave不要
+    
   end
 
   def index
     # いいね数を多い順に表示
-    to = Time.current.at_end_of_day
-    from = (to - 6.day).at_beginning_of_day
+    to = Time.current.at_end_of_day #今日の終わりまで
+    from = (to - 6.day).at_beginning_of_day #1週間まえから
     @books = Book.includes(:favorites).
       sort_by {|x|
         x.favorites.includes(:favorites).where(created_at: from...to).size
