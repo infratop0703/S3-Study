@@ -50,6 +50,16 @@ class UsersController < ApplicationController
       render "edit"
     end
   end
+  
+  def search
+    user_books = User.find(params[:user_id]).books #user_idで取得したユーザの本の一覧を取得
+    created_time = params[:created_at] #created_atをcreated_timeに代入
+    if created_time == "" 
+      @search_book = "日付が選択されていません" #値が
+    else
+      @search_book = user_books.where(created_at: created_time.to_date.all_day).count 
+    end
+  end
 
   private
 
