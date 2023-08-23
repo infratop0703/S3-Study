@@ -8,8 +8,14 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books = Book.all
     @book = Book.new
+    if params[:latest]
+      @books = Book.latest
+    elsif params[:star]
+      @books = Book.star
+    else
+      @books = Book.all
+    end
   end
 
   def create
@@ -44,7 +50,7 @@ class BooksController < ApplicationController
   def book_params
     params.require(:book).permit(:title, :body,:star)
   end
-
+  
   def ensure_correct_user
     @book = Book.find(params[:id])
     unless @book.user == current_user
