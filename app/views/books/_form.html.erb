@@ -10,4 +10,34 @@
   <div class="form-group">
     <%= f.submit class: 'btn btn-success' %>
   </div>
+  
+  <% if book.id.nil? %>
+    <div class="form-group" id="star">
+      <%= f.label :star %>
+      <%= f.hidden_field :star, id: :review_star, class: 'form-control' %>
+      <div id="post_raty"></div>
+    </div>
+    <script>
+      $(document).on('turbolinks:load', function() {
+        let elem = document.querySelector('#post_raty');
+        if (elem == null) return;
+  
+        elem.innerHTML = ""
+        let opt = {  
+          starOn: "<%= asset_path('star-on.png') %>",
+          starOff: "<%= asset_path('star-off.png') %>",
+          starHalf: false,
+          scoreName: 'book[star]',
+        };
+        raty(elem, opt);
+      });
+    </script>
+  <% else %>
+    <div class="form-group">
+      <%= render "static.rate", book: book %>
+    </div>
 <% end %>
+
+<% end %>
+
+:

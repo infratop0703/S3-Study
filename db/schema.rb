@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_033556) do
+ActiveRecord::Schema.define(version: 2023_08_23_063533) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -54,6 +54,14 @@ ActiveRecord::Schema.define(version: 2021_10_26_033556) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "star"
+  end
+
+  create_table "entries", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "room_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "favorites", force: :cascade do |t|
@@ -63,9 +71,78 @@ ActiveRecord::Schema.define(version: 2021_10_26_033556) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "group_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "group_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.text "introduction"
+    t.integer "image_id"
+    t.integer "owner_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "room_id"
+    t.string "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "rating_rates", force: :cascade do |t|
+    t.decimal "value", precision: 11, scale: 2, default: "0.0"
+    t.string "author_type", limit: 10, null: false
+    t.integer "author_id", null: false
+    t.string "resource_type", limit: 10, null: false
+    t.integer "resource_id", null: false
+    t.string "scopeable_type", limit: 10
+    t.integer "scopeable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id", "resource_type", "resource_id", "scopeable_type", "scopeable_id"], name: "index_rating_rates_on_author_and_resource_and_scopeable", unique: true
+    t.index ["author_type", "author_id"], name: "index_rating_rates_on_author"
+    t.index ["resource_type", "resource_id"], name: "index_rating_rates_on_resource"
+    t.index ["scopeable_type", "scopeable_id"], name: "index_rating_rates_on_scopeable"
+  end
+
+  create_table "rating_ratings", force: :cascade do |t|
+    t.decimal "average", precision: 11, scale: 2, default: "0.0"
+    t.decimal "estimate", precision: 11, scale: 2, default: "0.0"
+    t.integer "sum", default: 0
+    t.integer "total", default: 0
+    t.string "resource_type", limit: 10, null: false
+    t.integer "resource_id", null: false
+    t.string "scopeable_type", limit: 10
+    t.integer "scopeable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_type", "resource_id", "scopeable_type", "scopeable_id"], name: "index_rating_rating_on_resource_and_scopeable", unique: true
+    t.index ["resource_type", "resource_id"], name: "index_rating_ratings_on_resource"
+    t.index ["scopeable_type", "scopeable_id"], name: "index_rating_ratings_on_scopeable"
+  end
+
+  create_table "read_counts", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "book_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "relationships", force: :cascade do |t|
     t.integer "follower_id"
     t.integer "followed_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -80,6 +157,7 @@ ActiveRecord::Schema.define(version: 2021_10_26_033556) do
     t.text "introduction"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "entry"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
