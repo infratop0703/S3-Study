@@ -17,6 +17,12 @@
           </td>
           <td><%= link_to @book.title, @book %></td>
           <td><%= @book.body %></td>
+          <td>
+            <% if @book.category.present? %>
+              <%= link_to @book.category, tag_searches_search_path(content: @book.category) %>
+              <!--contentパラムに入力された値（@book.category)を当てはめて渡している。-->
+            <% end %>
+          </td>
           <td id="favorite-<%= @book.id%>" %> 
             <%= render "favorites/btn", book: @book %>
           </td>

@@ -36,7 +36,12 @@
     <div class="form-group">
       <%= render "static.rate", book: book %>
     </div>
-<% end %>
+  <% end %>
+  
+  <div class="form-group">
+    <%= f.label :Category %>
+    <%= f.text_field :category, class: "form-control book_category" %>
+  </div>
 
 <% end %>
 
